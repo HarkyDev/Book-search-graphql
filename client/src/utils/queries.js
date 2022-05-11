@@ -1,4 +1,3 @@
-
 import gql from 'graphql-tag';
 
 export const GET_ME = gql`
@@ -13,8 +12,8 @@ export const GET_ME = gql`
                 authors
                 title
                 description
-                link
                 image
+                link
             }
         }
     }

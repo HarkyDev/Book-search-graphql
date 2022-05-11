@@ -7,32 +7,26 @@ import { removeBookId } from '../utils/localStorage';
 import Auth from '../utils/auth';
 
 
-//
-
 
 const SavedBooks = () => {
 
-  const {loading, data} = useQuery(GET_ME);
+  const { loading, data } = useQuery(GET_ME);
   const userData = data?.me || [];
+  const [removeBook] = useMutation(REMOVE_BOOK);
 
-  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
-
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    if (!token) {
+    const signInKey = Auth.loggedIn() ? Auth.getToken() : null;
+    console.log(bookId);
+    if (!signInKey) {
       return false;
     }
 
     try {
+      // Apollo will cache the response and automatically refetch and update
       await removeBook({
-        variables: { bookId }
+        variables: { bookId: bookId }
       });
 
-      if (error) {
-        throw new Error('Something went wrong!');
-      }
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {

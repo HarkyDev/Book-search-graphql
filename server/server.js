@@ -4,7 +4,7 @@ const { ApolloServer } = require("apollo-server-express");
 const path = require("path");
 
 // import typedefs and resolvers
-const { typeDefs, resolvers } = require("./schema");
+const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 const { authMiddleware } = require("./utils/auth");
 
@@ -36,9 +36,9 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
-// });
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 db.once("open", () => {
   try {
